@@ -1,6 +1,6 @@
 # overdue
 
-Written by Avo Laande`
+Written by Avo Laande
 
 Plugin for [todo.sh](http://todotxt.org/) that moves the `due:` date of every open task that is past due to today, so all overdue To-Do's show up in one list for Today.
 
