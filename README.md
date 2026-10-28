@@ -4,7 +4,7 @@ Written by Avo Laande
 
 Plugin for [todo.sh](http://todotxt.org/) that moves the `due:` date of every open task that is past due to today, so all overdue To-Do's show up in one list for Today.
 
-Tasks without a `due:` date and completed (`x`) tasks are left untouched.
+Tasks without a `due:` date, completed (`x`) tasks and recurring (`rec:`) tasks are left untouched. Recurring tasks keep their original `due:` date, because the recurrence logic uses it to calculate the next due date.
 
 ## Usage
 
