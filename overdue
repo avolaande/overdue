@@ -2,6 +2,7 @@
 # overdue: move the due: date of every open task that is past due to today.
 # Tasks without a due: date, completed (x) tasks and recurring (rec:) tasks are
 # left untouched; recurrence uses the original due: date to compute the next one.
+# Exception: daily recurring tasks (rec:1d, rec:d, rec:+1d, rec:+d) are moved too.
 
 action=$1
 shift
@@ -9,7 +10,8 @@ shift
 [ "$action" = "usage" ] && {
   echo "  overdue"
   echo "    Move the due: date of all open, past-due tasks to today."
-  echo "    Recurring tasks (rec:) keep their original due: date."
+  echo "    Recurring tasks (rec:) keep their original due: date,"
+  echo "    except daily ones (rec:1d, rec:d, rec:+1d, rec:+d)."
   echo ""
   exit
 }
@@ -18,7 +20,7 @@ today=$(date +%Y-%m-%d)
 tmp=$(mktemp) || exit 1
 
 awk -v today="$today" '
-  !/^x / && !/(^|[ \t])rec:[^ \t]/ && match($0, /due:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/) {
+  !/^x / && (!/(^|[ \t])rec:[^ \t]/ || /(^|[ \t])rec:[+]?1?d([ \t]|$)/) && match($0, /due:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/) {
     d = substr($0, RSTART + 4, 10)
     if (d < today) {
       $0 = substr($0, 1, RSTART + 3) today substr($0, RSTART + RLENGTH)
